@@ -1,0 +1,1 @@
+A stock ticker in scala.

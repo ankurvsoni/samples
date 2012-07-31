@@ -1,0 +1,1 @@
+This stock ticker is my first attempt to write something in node.js, socket.io and jquery. Its a very simple program to show how to stream data from backend to UI using socket.io.

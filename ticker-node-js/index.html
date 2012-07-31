@@ -1,0 +1,49 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        $(function(){
+            var iosocket = io.connect();
+ 
+            iosocket.on('connect', function () {
+                $('#status').text('Status : Connected');
+ 
+                iosocket.on('message', function(message) {
+                    var obj = $.parseJSON(message);
+                    $('#' + message.ticker).text(message.last);
+                });
+                iosocket.on('disconnect', function() {
+                    $('#status').text('Status : Disconnected');
+                });
+            });
+ 
+            $('#ticker').keypress(function(event) {
+                if(event.which == 13) {
+                    event.preventDefault();
+                    iosocket.send($('#ticker').val());
+                    $('#tickerTable').append($('<tr><td>' 
+                                                + $('#ticker').val()
+                                                + '</td><td  id="'
+                                                + $('#ticker').val()
+                                                + '"></td></tr>'));
+                    $('#ticker').val('');
+                }
+            });
+        });
+    </script>
+    <title>Stock ticker in Node.js</title>
+</head>
+<body>
+    <div id="status">Status : </div>
+    <div>Enter Ticker:&nbsp;<input type="text" id="ticker"></div>
+    <br/>
+    <table id="tickerTable">
+        <tr class="yellow">
+            <td>Ticker</td>
+            <td>Last Price</td>
+        </tr>
+    </table>
+</body>
+</html>
